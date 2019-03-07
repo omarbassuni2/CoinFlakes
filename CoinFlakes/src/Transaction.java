@@ -1,17 +1,17 @@
-
 public class Transaction {
 	private String ID;
 	private String TransactionReceiver;
 	private int AmountTransfered;
 	
-	public Transaction(String ID, String TransactionReceiver, AmountTransfered){
+	public Transaction(String ID, String TransactionReceiver, int AmountTransfered){
 		this.ID = ID;
 		this.TransactionReceiver = TransactionReceiver;
 		this.AmountTransfered = AmountTransfered;
-		Block CreateNewBlock  = new Block(this);
+
+		
 	}
 	public void setID(String ID){
-		this.ID;
+		this.ID = ID;
 	}
 	public void setTransactionReceiver(String TransactionReceiver){
 		this.TransactionReceiver = TransactionReceiver;
@@ -28,6 +28,9 @@ public class Transaction {
 	public int getAmountTransfered(){
 		return AmountTransfered;
 	}
-	
+	public void displayInfo(){
+		System.out.println("ID: " + this.ID + " Receiver: " + this.TransactionReceiver + " AmountTransfered: " + this.AmountTransfered);
+	}
+
 	
 }
