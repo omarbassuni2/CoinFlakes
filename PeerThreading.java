@@ -24,13 +24,24 @@ public class PeerThreading extends Thread{
 							String blk = string.substring(8);
 							Peer.revertBlock(blk);
 						}
+						else if(string.startsWith("longestchain")){
+							string = string.substring(13);
+							String myBlockChainString = Peer.callConvertBlockChain();
+							if(string.length() > myBlockChainString.length()){
+								string = Peer.callRevertBlockChain(string);
+							}
+							else{
+								string = "Chain is still the same!";
+							}
+							serverThread.sendMessage(string);
+						}
 						else if(string.startsWith("getcoins")){
 							String amountReceived = string.substring(8);
 							int newBalance = Peer.addCoins(Integer.valueOf(amountReceived));
 							System.out.println("Your balance now: " + newBalance);
 						}
 						else{
-							System.out.println("not a query: " + string);
+							System.out.println("Msg: " + string);
 						}
 			}
 		} catch (IOException e) {

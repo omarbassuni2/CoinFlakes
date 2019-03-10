@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class BlockChain {
 	
 	private static ArrayList<Block> myChain;
-	private static ArrayList<Block> networkChain = new ArrayList<Block>();
 	private static int difficulty = 1;
 	public BlockChain(){
 		myChain = new ArrayList<Block>();
@@ -26,7 +25,14 @@ public class BlockChain {
 	}
 	public static void addSentBlock(Block blk, boolean verified){
 		if(verified){
-			myChain.add(blk);
+			if(myChain.size() > 0){
+				if(blk != myChain.get(myChain.size()-1));
+				{
+					myChain.add(blk);
+				}
+			}
+			else
+				myChain.add(blk);
 		}
 	}
 	public static void displayMyChain(){
@@ -51,15 +57,8 @@ public class BlockChain {
 	public static ArrayList<Block> getMyChains(){
 		return myChain;
 	}
-	public void setMyChains(ArrayList<Block> myChain){
+	public static void setMyChains(ArrayList<Block> myChain){
 		BlockChain.myChain = myChain;
-	}
-	
-	public void setChains(ArrayList<Block> chains){
-		BlockChain.networkChain = chains;
-	}
-	public ArrayList<Block> getNetworkChain(){
-		return networkChain;
 	}
 	public static String convertBlock(){
 		String lastBlockString = "";
@@ -75,5 +74,25 @@ public class BlockChain {
 		Block addBlock = new Block(values[0], values[1], values[2], Integer.valueOf(values[3]), values[4]);
 		addSentBlock(addBlock, true);
 	}
-	
+	public static String convertChain() {
+		String blockChainString = "";
+		for(int i =0;i < myChain.size()-1;i++){
+			blockChainString += myChain.get(i).getHash() + ":" + 
+					myChain.get(i).getPrevHash() + ":" + 
+					myChain.get(i).getDataString() + ":" +
+					myChain.get(i).getIndex() + ":" +
+					myChain.get(i).getTimeStamp() + "\n";
+		}
+		return blockChainString;
+	}
+	public static void revertChain(String blockChainString) {
+		String[] arrayOfBlocks = blockChainString.split("\n");
+		ArrayList<Block> longestChain = new ArrayList<Block>();
+		for(int i =0;i < arrayOfBlocks.length;i++){
+			String[] blockValues = arrayOfBlocks[i].split(":");
+			Block addBlock = new Block(blockValues[0], blockValues[1], blockValues[2], Integer.valueOf(blockValues[3]), blockValues[4]);
+			longestChain.add(addBlock);
+		}
+		myChain = longestChain;
+	}
 }
