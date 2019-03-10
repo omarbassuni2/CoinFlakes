@@ -44,13 +44,12 @@ public class Peer {
     	Scanner sc = new Scanner(System.in);
     	while(flag){
     		String message = "Nothing yet!";
-    		System.out.println("Enter a query!\nrequest: send_coins\nrequest: display_blockchain\nrequest: add_last_block\nrequest: change_peer\nE to Exit");
 			try {
 				message = bufferedReader.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-    		if(message.equals("request: change_peer")){
+    		if(message.equals("request: add_peer")){
     			updateContactList(bufferedReader);
     		}
     		else if(message.equals("request: send_coins")){
@@ -59,6 +58,10 @@ public class Peer {
     			serverThread.sendMessage(message);
     			message = BlockChain.convertBlock();
     			serverThread.sendMessage("addblock" + message);
+    		}
+    		else if(message.equals("request: longest_chain")){
+    				message = "longestchain" + BlockChain.convertChain();
+    				
     		}
     		else if(message.equals("E")){
     			flag = false;
@@ -71,6 +74,7 @@ public class Peer {
     		else{
     			serverThread.sendMessage(message);
     		}
+    		System.out.println("Enter a query!\nrequest: send_coins\nrequest: display_blockchain\nrequest: add_last_block\nrequest: add_peer\nrequest: longest_chain\nE to Exit");
     	}
     }
 	public static void revertBlock(String blk) {
@@ -84,4 +88,13 @@ public class Peer {
 		int newBalance = walletOfCoins.add(amountReceived);
 		return newBalance;
 	}
+	public static String callConvertBlockChain(){
+		String myBlockChainString =BlockChain.convertChain();
+		return myBlockChainString;
+	}
+	public static String callRevertBlockChain(String revertString){
+		BlockChain.revertChain(revertString);
+		return "BlockChain updated successfully!";
+	}
+	
 }
